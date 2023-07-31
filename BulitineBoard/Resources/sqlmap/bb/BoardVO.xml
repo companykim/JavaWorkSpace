@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BoardVO">
+
+	<resultMap id="rmBoardVO" extends="Entity.rmEntity" type="BoardVO">
+		<result property="name" column="name" />
+		<result property="descrip" column="descrip" />
+		<result property="postCnt" column="post_cnt" />
+
+	</resultMap>
+
+	<select id="selectAll" resultMap="rmBoardVO">
+		SELECT *
+		FROM T_bulitine_board
+	</select>
+</mapper>

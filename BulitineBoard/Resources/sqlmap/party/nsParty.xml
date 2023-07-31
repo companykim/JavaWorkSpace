@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="nsParty">
+
+	<resultMap id="rmParty" extends="Entity.rmMasterEntity" 
+		type="www.dream.party.model.Party">
+		<result property="name" column="name" />
+		<result property="sex" column="sex" />
+		<collection property="listContactPoint" resultMap="rmContactPointVO">
+    	</collection>
+		<discriminator javaType="String" column="descrim">
+      		<case value="Member" resultMap="rmMemberVO"/>
+      		<case value="Manager" resultMap="rmManagerVO"/>
+    	</discriminator>
+	</resultMap>
+	
+	<resultMap id="rmMemberVO" extends="rmParty" type="www.dream.party.model.MemberVO"/>
+	<resultMap id="rmManagerVO" extends="rmParty" type="www.dream.party.model.ManagerVO"/>
+
+		<resultMap id="rmContactPointVO" type="www.dream.party.model.ContactPointVO">
+			<result property="cpType" column="cp_type" />
+			<result property="cpVal" column="cp_val" />
+	</resultMap>
+
+	
+	<select id="selectAll" resultMap="rmParty">
+		SELECT *
+		  FROM T_party p LEFT OUTER JOIN T_contact_Point cp
+			on p.id = cp.owner_id
+	</select>
+
+	<insert id="insert" parameterType="MemberVO">
+		<selectKey keyProperty="id" resultType="String" order="BEFORE">
+   	 		select NEXT_PK('s_party')
+  		</selectKey>
+  
+		INSERT INTO T_party(id, descrim, name, sex)
+		 VALUES (#{id}, 'Member', #{name}, #{sex});
+		 
+		 INSERT INTO T_contact_Point(owner_id, cp_type, cp_val)
+		 VALUES
+		 <foreach item="item" collection="listContactPoint"
+         	separator="," close=";">
+		 	(#{id},  #{item.cpType}, #{item.cpVal})
+		 </foreach>
+	</insert>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+    
+<configuration>
+    <typeAliases>
+        <typeAlias alias="BoardVO" type="www.dream.bb.model.BoardVO"/>
+        <typeAlias alias="MemberVO" type="www.dream.party.model.MemberVO"/>                
+    </typeAliases>
+ 
+    <environments default="development">
+    
+        <environment id="development">
+          <transactionManager type="JDBC"/>
+            <!--  connecting to Local MySql -->
+            <dataSource type="POOLED">
+                <property name="driver" value="org.mariadb.jdbc.Driver"/>
+                <property name="url" value="jdbc:mariadb://127.0.0.1:3306/bbdb?allowMultiQueries=true"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+       </environment>
+    </environments>
+    <mappers>
+       <mapper resource="sqlmap/framework/Entity.xml"/>
+       <mapper resource="sqlmap/bb/BoardVO.xml"/>
+       <mapper resource="sqlmap/party/nsParty.xml"/>
+    </mappers>
+</configuration>
